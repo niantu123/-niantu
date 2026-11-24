@@ -1,0 +1,190 @@
+/* app.wxss - 全局样式 */
+page {
+  background-color: #faf7f3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.5;
+}
+
+view,
+text,
+input,
+textarea,
+button {
+  box-sizing: border-box;
+}
+
+/* 主题渐变 */
+.theme-gradient {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff9a5a 60%, #ffb37e 100%);
+}
+
+.theme-text {
+  background: linear-gradient(135deg, #ff6b35, #ff9a5a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 通用容器 */
+.container {
+  padding: 24rpx;
+}
+
+/* 卡片 */
+.card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 30rpx rgba(93, 58, 26, 0.07);
+}
+
+/* 区块标题 */
+.section-head {
+  display: flex;
+  align-items: center;
+  margin: 36rpx 8rpx 20rpx;
+}
+
+.section-bar {
+  width: 8rpx;
+  height: 32rpx;
+  margin-right: 14rpx;
+  border-radius: 4rpx;
+  background: linear-gradient(180deg, #ff6b35, #ff9a5a);
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #3d2b1f;
+}
+
+/* 点击反馈 */
+.card-hover {
+  opacity: 0.86;
+  transform: scale(0.985);
+}
+
+.item-hover {
+  background-color: #faf6f1;
+}
+
+/* 主按钮 */
+.btn-primary {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff9a5a 100%);
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  letter-spacing: 2rpx;
+  padding: 22rpx 0;
+  text-align: center;
+  border: none;
+  box-shadow: 0 8rpx 20rpx rgba(255, 107, 53, 0.28);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+  box-shadow: 0 4rpx 12rpx rgba(255, 107, 53, 0.22);
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-primary[disabled] {
+  opacity: 0.6;
+  color: #fff;
+}
+
+/* 次级按钮 */
+.btn-ghost {
+  background: #fff;
+  color: #ff6b35;
+  border: 1rpx solid #ff6b35;
+  border-radius: 44rpx;
+  font-size: 28rpx;
+  padding: 16rpx 0;
+  text-align: center;
+}
+
+/* 标签 */
+.tag {
+  display: inline-block;
+  padding: 2rpx 12rpx;
+  margin-right: 8rpx;
+  font-size: 20rpx;
+  color: #ff6b35;
+  background: #fff4ee;
+  border-radius: 8rpx;
+}
+
+/* 文字省略 */
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ellipsis-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* 空状态 */
+.empty {
+  padding: 120rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #999;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 26rpx;
+  margin-bottom: 30rpx;
+}
+
+/* 状态徽标 */
+.status {
+  font-size: 20rpx;
+  padding: 2rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.status-pending {
+  color: #d48806;
+  background: #fffbe6;
+}
+
+.status-approved {
+  color: #389e0d;
+  background: #f6ffed;
+}
+
+.status-rejected {
+  color: #cf1322;
+  background: #fff1f0;
+}
+
+.status-offline {
+  color: #8c8c8c;
+  background: #f5f5f5;
+}
+
+/* 页脚 */
+.footer-text {
+  text-align: center;
+  font-size: 22rpx;
+  color: #bbb;
+  padding: 30rpx 0 50rpx;
+}

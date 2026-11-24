@@ -1,0 +1,74 @@
+<!-- pages/assistant/assistant.wxml - 文创产品助手 -->
+<view class="assistant-page">
+  <scroll-view class="chat-area" scroll-y scroll-into-view="{{scrollInto}}" scroll-with-animation>
+    <view class="chat-list">
+      <view wx:for="{{messages}}" wx:key="id" id="{{item.id}}">
+        <!-- 用户消息 -->
+        <view class="row right" wx:if="{{item.role === 'user'}}">
+          <view class="bubble user">{{item.text}}</view>
+          <view class="avatar user-avatar">🧑</view>
+        </view>
+
+        <!-- 助手消息 -->
+        <view class="row left" wx:else>
+          <view class="avatar bot-avatar">🌿</view>
+          <view class="bubble bot">
+            <text class="bot-text">{{item.text}}</text>
+            <view wx:if="{{item.type === 'products'}}" class="product-list">
+              <view
+                class="product-card"
+                wx:for="{{item.products}}"
+                wx:for-item="p"
+                wx:key="_id"
+                hover-class="card-hover"
+                hover-stay-time="80"
+                bindtap="goDetail"
+                data-id="{{p._id}}"
+              >
+                <image class="p-cover" src="{{p.cover}}" mode="aspectFill"></image>
+                <view class="p-info">
+                  <view class="p-name">{{p.name}}</view>
+                  <view class="p-summary">{{p.summary}}</view>
+                </view>
+                <view class="p-arrow">›</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="row left" wx:if="{{sending}}">
+        <view class="avatar bot-avatar">🌿</view>
+        <view class="bubble bot typing">
+          <view class="dot d1"></view>
+          <view class="dot d2"></view>
+          <view class="dot d3"></view>
+        </view>
+      </view>
+
+      <view class="chat-pad"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 快捷问题 -->
+  <scroll-view class="quick-bar" scroll-x enable-flex>
+    <view class="quick-chip" wx:for="{{quick}}" wx:key="*this" bindtap="onQuickTap" data-q="{{item}}">{{item}}</view>
+  </scroll-view>
+
+  <!-- 输入栏 -->
+  <view class="input-bar">
+    <view class="online-toggle {{online ? 'on' : ''}}" hover-class="toggle-hover" hover-stay-time="60" bindtap="toggleOnline">
+      <text class="toggle-icon">🌐</text>
+      <text class="toggle-text">联网</text>
+    </view>
+    <input
+      class="chat-input"
+      value="{{input}}"
+      placeholder="问问文创助手…"
+      confirm-type="send"
+      bindinput="onInput"
+      bindconfirm="onSend"
+    />
+    <view class="send-btn {{input ? 'active' : ''}}" bindtap="onSend">发送</view>
+  </view>
+</view>

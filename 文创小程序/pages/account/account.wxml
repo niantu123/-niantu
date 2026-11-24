@@ -1,0 +1,94 @@
+<!-- pages/account/account.wxml - 账号安全 -->
+<view class="account-page">
+  <view class="card">
+    <view class="row" hover-class="item-hover" hover-stay-time="80" bindtap="onChangeAccount">
+      <text class="label">登录账号</text>
+      <text class="value {{accountText === '未设置' ? 'muted' : ''}}">{{accountText}}</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="row" hover-class="item-hover" hover-stay-time="80" bindtap="onChangeRole">
+      <text class="label">账号角色</text>
+      <text class="value">{{roleText}}</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="row" hover-class="item-hover" hover-stay-time="80" bindtap="onChangePassword">
+      <text class="label">登录密码</text>
+      <text class="value muted">定期修改更安全</text>
+      <text class="arrow">›</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="row" hover-class="item-hover" hover-stay-time="80" bindtap="onBindPhone">
+      <text class="label">手机号</text>
+      <text class="value {{user.phone ? '' : 'muted'}}">{{phoneText}}</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="row" hover-class="item-hover" hover-stay-time="80" bindtap="onBindEmail">
+      <text class="label">邮箱</text>
+      <text class="value {{user.email ? '' : 'muted'}}">{{emailText}}</text>
+      <text class="arrow">›</text>
+    </view>
+  </view>
+
+  <view class="tip">账号可用于登录本平台；角色决定可使用的功能（管理员可进入后台审核作品）；修改密码需先核对原密码，修改成功后请使用新密码登录。</view>
+
+  <!-- 通用编辑弹窗（账号 / 手机号 / 邮箱） -->
+  <view class="modal-mask" wx:if="{{editVisible}}" catchtap="closeEditModal" catchtouchmove="noop">
+    <view class="modal-card" catchtap="noop">
+      <view class="modal-title">{{editTitle}}</view>
+      <view class="modal-sub">{{editSub}}</view>
+      <input class="modal-input {{editField === 'phone' ? 'input-number' : ''}}" type="{{editField === 'phone' ? 'number' : 'text'}}" maxlength="{{editField === 'phone' ? 11 : 30}}" placeholder="{{editPlaceholder}}" value="{{editValue}}" bindinput="onEditInput" />
+      <view class="modal-actions">
+        <view class="modal-btn cancel" bindtap="closeEditModal">取消</view>
+        <view class="modal-btn confirm" bindtap="confirmEdit">确认</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 修改密码弹窗 -->
+  <view class="modal-mask" wx:if="{{pwdVisible}}" catchtap="closePwdModal" catchtouchmove="noop">
+    <view class="modal-card" catchtap="noop">
+      <view class="modal-title">{{hasPassword ? '修改密码' : '设置密码'}}</view>
+      <view class="modal-sub">{{hasPassword ? '为保障账号安全，请先核对原密码' : '首次设置密码，可直接输入新密码'}}</view>
+
+      <view class="input-wrap" wx:if="{{hasPassword}}">
+        <input wx:if="{{!pwdShowOld}}" class="modal-input input-inner" type="text" password maxlength="20" placeholder="请输入原密码" value="{{pwdOld}}" bindinput="onPwdOldInput" />
+        <input wx:else class="modal-input input-inner" type="text" maxlength="20" placeholder="请输入原密码" value="{{pwdOld}}" bindinput="onPwdOldInput" />
+        <view class="eye {{pwdShowOld ? 'open' : 'closed'}}" hover-class="eye-hover" hover-stay-time="60" catchtap="togglePwdOld">
+          <view class="eye-outline"></view>
+          <view class="eye-pupil"></view>
+          <view class="eye-lash lash-1"></view>
+          <view class="eye-lash lash-2"></view>
+          <view class="eye-lash lash-3"></view>
+        </view>
+      </view>
+      <view class="input-wrap">
+        <input wx:if="{{!pwdShowNew}}" class="modal-input input-inner" type="text" password maxlength="20" placeholder="请输入新密码（至少 6 位）" value="{{pwdNew}}" bindinput="onPwdNewInput" />
+        <input wx:else class="modal-input input-inner" type="text" maxlength="20" placeholder="请输入新密码（至少 6 位）" value="{{pwdNew}}" bindinput="onPwdNewInput" />
+        <view class="eye {{pwdShowNew ? 'open' : 'closed'}}" hover-class="eye-hover" hover-stay-time="60" catchtap="togglePwdNew">
+          <view class="eye-outline"></view>
+          <view class="eye-pupil"></view>
+          <view class="eye-lash lash-1"></view>
+          <view class="eye-lash lash-2"></view>
+          <view class="eye-lash lash-3"></view>
+        </view>
+      </view>
+      <view class="input-wrap">
+        <input wx:if="{{!pwdShowConfirm}}" class="modal-input input-inner" type="text" password maxlength="20" placeholder="请再次输入新密码" value="{{pwdConfirm}}" bindinput="onPwdConfirmInput" />
+        <input wx:else class="modal-input input-inner" type="text" maxlength="20" placeholder="请再次输入新密码" value="{{pwdConfirm}}" bindinput="onPwdConfirmInput" />
+        <view class="eye {{pwdShowConfirm ? 'open' : 'closed'}}" hover-class="eye-hover" hover-stay-time="60" catchtap="togglePwdConfirm">
+          <view class="eye-outline"></view>
+          <view class="eye-pupil"></view>
+          <view class="eye-lash lash-1"></view>
+          <view class="eye-lash lash-2"></view>
+          <view class="eye-lash lash-3"></view>
+        </view>
+      </view>
+      <view class="modal-actions">
+        <view class="modal-btn cancel" bindtap="closePwdModal">取消</view>
+        <view class="modal-btn confirm" catchtap="confirmChangePassword">确认修改</view>
+      </view>
+    </view>
+  </view>
+</view>

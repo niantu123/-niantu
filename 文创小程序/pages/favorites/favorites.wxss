@@ -1,0 +1,55 @@
+/* pages/favorites/favorites.wxss */
+.favorites-page {
+  min-height: 100vh;
+  padding: 24rpx 16rpx;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: calc(50% - 16rpx);
+  margin: 0 8rpx 20rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 6rpx 20rpx rgba(60, 40, 20, 0.06);
+}
+
+.cover {
+  width: 100%;
+  height: 320rpx;
+  display: block;
+}
+
+.info {
+  padding: 16rpx 16rpx 8rpx;
+}
+
+.name {
+  font-size: 27rpx;
+  font-weight: bold;
+}
+
+.author {
+  margin-top: 6rpx;
+  font-size: 21rpx;
+  color: #999;
+}
+
+.remove {
+  margin: 8rpx 16rpx 16rpx;
+  padding: 10rpx 0;
+  text-align: center;
+  font-size: 23rpx;
+  color: #999;
+  border: 1rpx solid #eee;
+  border-radius: 24rpx;
+}
+
+.go-btn {
+  padding: 16rpx 56rpx;
+  font-size: 26rpx;
+}

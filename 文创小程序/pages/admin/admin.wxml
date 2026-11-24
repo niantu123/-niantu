@@ -1,0 +1,284 @@
+<!-- pages/admin/admin.wxml - 管理员后台 -->
+<view class="admin-page">
+  <view class="tabs">
+    <view class="tab {{tab === 'review' ? 'active' : ''}}" bindtap="switchTab" data-tab="review">
+      作品审核<text class="badge" wx:if="{{reviewList.length > 0}}">{{reviewList.length}}</text>
+    </view>
+    <view class="tab {{tab === 'works' ? 'active' : ''}}" bindtap="switchTab" data-tab="works">作品管理</view>
+    <view class="tab {{tab === 'users' ? 'active' : ''}}" bindtap="switchTab" data-tab="users">用户管理</view>
+    <view class="tab {{tab === 'messages' ? 'active' : ''}}" bindtap="switchTab" data-tab="messages">留言管理</view>
+    <view class="tab {{tab === 'feedbacks' ? 'active' : ''}}" bindtap="switchTab" data-tab="feedbacks">意见反馈</view>
+    <view class="tab {{tab === 'orders' ? 'active' : ''}}" bindtap="switchTab" data-tab="orders">订单管理</view>
+  </view>
+
+  <!-- 作品审核：展示所有未上架作品 -->
+  <view class="panel" wx:if="{{tab === 'review'}}">
+    <view class="panel-hint" wx:if="{{reviewList.length > 0}}">共 {{reviewList.length}} 件作品待处理</view>
+    <view class="review-list" wx:if="{{reviewList.length > 0}}">
+      <view class="review-card" wx:for="{{reviewList}}" wx:key="_id">
+        <view class="review-head">
+          <image class="review-cover" src="{{item.cover}}" mode="aspectFill"></image>
+          <view class="review-info">
+            <view class="review-name ellipsis">{{item.name}}</view>
+            <view class="review-summary ellipsis-2">{{item.summary}}</view>
+            <view class="review-meta">作者：{{item.authorName}} · {{item.timeText}}</view>
+            <text class="status {{item.statusClass}}">{{item.statusText}}</text>
+          </view>
+        </view>
+        <view class="review-reason" wx:if="{{item.status === 'rejected' && item.rejectReason}}">
+          驳回原因：{{item.rejectReason}}
+        </view>
+        <view class="review-story ellipsis-2">{{item.story}}</view>
+        <view class="review-actions">
+          <view class="action-btn reject" bindtap="openReject" data-id="{{item._id}}">驳回</view>
+          <view class="action-btn approve" bindtap="onApprove" data-id="{{item._id}}">通过审核</view>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:elif="{{!loading}}">
+      <text class="empty-icon">✅</text>
+      <text class="empty-text">暂无未上架作品</text>
+    </view>
+  </view>
+
+  <!-- 作品管理 -->
+  <view class="panel" wx:if="{{tab === 'works'}}">
+    <view class="panel-hint" wx:if="{{allList.length > 0}}">共 {{allList.length}} 件作品 · 点击作品可查看详情</view>
+    <view class="work-list" wx:if="{{allList.length > 0}}">
+      <view class="work-row" wx:for="{{allList}}" wx:key="_id" bindtap="goWorkDetail" data-id="{{item._id}}" hover-class="row-hover" hover-stay-time="80">
+        <image class="work-cover" src="{{item.cover}}" mode="aspectFill"></image>
+        <view class="work-main">
+          <view class="review-name ellipsis">{{item.name}}</view>
+          <view class="review-meta">{{item.authorName}} · {{item.timeText}}</view>
+          <text class="status {{item.statusClass}}">{{item.statusText}}</text>
+        </view>
+        <view class="work-actions">
+          <view
+            wx:if="{{item.status === 'approved' || item.status === 'offline'}}"
+            class="action-btn small {{item.status === 'approved' ? 'reject' : 'approve'}}"
+            catchtap="onToggleShelf"
+            data-id="{{item._id}}"
+            data-status="{{item.status}}"
+          >{{item.status === 'approved' ? '下架' : '上架'}}</view>
+          <view class="action-btn small reject" catchtap="onDeleteWork" data-id="{{item._id}}">删除</view>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:else>
+      <text class="empty-text">暂无作品数据</text>
+    </view>
+  </view>
+
+  <!-- 用户管理 -->
+  <view class="panel" wx:if="{{tab === 'users'}}">
+    <view class="user-list" wx:if="{{userList.length > 0}}">
+      <view class="user-row" wx:for="{{userList}}" wx:key="_id" bindtap="onUserDetail" data-id="{{item._id}}">
+        <image class="user-avatar" src="{{item.avatarUrl || '/images/avatar/default.jpg'}}" mode="aspectFill"></image>
+        <view class="user-main">
+          <view class="user-name">{{item.nickName}}</view>
+          <view class="user-sub">{{item.phoneText}}</view>
+        </view>
+        <view class="user-side">
+          <text class="role-chip {{item.role}}">{{item.roleText}}</text>
+          <text class="user-time">{{item.timeText}}</text>
+        </view>
+        <view class="user-acts">
+          <view class="action-btn small approve" catchtap="onEditUser" data-id="{{item._id}}">编辑</view>
+          <view class="action-btn small reject" catchtap="onDeleteUser" data-id="{{item._id}}">删除</view>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:else>
+      <text class="empty-text">暂无用户数据</text>
+    </view>
+  </view>
+
+  <!-- 留言管理 -->
+  <view class="panel" wx:if="{{tab === 'messages'}}">
+    <view class="message-list" wx:if="{{messageList.length > 0}}">
+      <view class="message-card" wx:for="{{messageList}}" wx:key="_id">
+        <view class="message-head">
+          <text class="message-user">{{item.userName}}</text>
+          <text class="status {{item.status === '已回复' ? 'status-approved' : 'status-pending'}}">{{item.status}}</text>
+        </view>
+        <view class="message-product" wx:if="{{item.productName}}">关于《{{item.productName}}》</view>
+        <view class="message-content">{{item.content}}</view>
+        <view class="message-contact" wx:if="{{item.contact}}">联系方式：{{item.contact}}</view>
+        <view class="reply" wx:if="{{item.reply}}">回复：{{item.reply}}</view>
+        <view class="message-foot">
+          <text class="message-time">{{item.timeText}}</text>
+        </view>
+        <view class="act-bar">
+          <view class="act-btn act-reply" bindtap="onReply" data-id="{{item._id}}">✉️ {{item.reply ? '修改回复' : '回复'}}</view>
+          <view class="act-btn act-del" bindtap="onDeleteMessage" data-id="{{item._id}}">删除</view>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:else>
+      <text class="empty-text">暂无留言</text>
+    </view>
+  </view>
+
+  <!-- 意见反馈 -->
+  <view class="panel" wx:if="{{tab === 'feedbacks'}}">
+    <!-- 类型筛选 -->
+    <view class="fb-filter">
+      <view
+        class="fb-chip {{fbType === item ? 'active' : ''}}"
+        wx:for="{{fbTypes}}"
+        wx:key="*this"
+        bindtap="switchFbType"
+        data-type="{{item}}"
+      >{{item}}</view>
+    </view>
+
+    <block wx:if="{{feedbackList.length > 0}}">
+      <view class="message-list">
+        <view class="message-card" wx:for="{{feedbackList}}" wx:key="_id">
+          <block wx:if="{{fbType === '全部' || fbType === item.type}}">
+            <view class="message-head">
+              <text class="message-user">{{item.userName}}</text>
+              <view class="fb-tags">
+                <text class="status {{item.type === '问题' ? 'status-pending' : 'status-approved'}}">{{item.type}}</text>
+                <text class="status {{item.status === '已处理' ? 'status-approved' : 'status-offline'}}">{{item.status}}</text>
+              </view>
+            </view>
+            <view class="message-content">{{item.content}}</view>
+            <view class="reply" wx:if="{{item.reply}}">回复：{{item.reply}}</view>
+            <view class="message-foot">
+              <text class="message-time">{{item.timeText}}</text>
+            </view>
+            <view class="act-bar">
+              <view class="act-btn act-reply" bindtap="openFbReply" data-id="{{item._id}}">✉️ {{item.reply ? '修改回复' : '回复'}}</view>
+              <view class="act-btn act-done" bindtap="onMarkFeedback" data-id="{{item._id}}">{{item.status === '已处理' ? '↩︎ 恢复待处理' : '✓ 已处理'}}</view>
+              <view class="act-btn act-del" bindtap="onDeleteFeedback" data-id="{{item._id}}">删除</view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+    <view class="empty" wx:else>
+      <text class="empty-text">暂无用户反馈</text>
+    </view>
+  </view>
+
+  <!-- 订单管理：管理员看全部，作者看含自己作品的订单 -->
+  <view class="panel" wx:if="{{tab === 'orders'}}">
+    <view class="panel-hint" wx:if="{{orderList.length > 0}}">
+      {{role === 'author' ? '仅展示包含你作品的订单' : '共 ' + orderList.length + ' 笔订单'}}
+    </view>
+    <view class="message-list" wx:if="{{orderList.length > 0}}">
+      <view class="message-card" wx:for="{{orderList}}" wx:key="_id">
+        <view class="message-head">
+          <text class="message-user">{{item.userName}}</text>
+          <text class="status {{item.statusClass}}">{{item.statusText}}</text>
+        </view>
+        <view class="message-content">{{item.itemsText}}</view>
+        <view class="order-meta">订单号：{{item._id}}</view>
+        <view class="order-meta" wx:if="{{item.address}}">收货：{{item.address}} · {{item.contact}}</view>
+        <view class="order-total-line">合计：<text class="order-total-num">¥{{item.total}}</text></view>
+        <view class="cancel-reason" wx:if="{{item.status === '已取消'}}">
+          <text class="cancel-reason-label">用户取消原因：</text>{{item.cancelReason || '未填写'}}
+          <text class="cancel-time" wx:if="{{item.cancelledText}}">（{{item.cancelledText}}）</text>
+        </view>
+        <view class="message-foot">
+          <text class="message-time">{{item.timeText}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:else>
+      <text class="empty-text">暂无订单数据</text>
+    </view>
+  </view>
+
+  <!-- 回复弹窗（留言 / 反馈共用） -->
+<view class="modal-mask" wx:if="{{replyVisible}}" catchtap="closeReply" catchtouchmove="noop">
+  <view class="modal-card" catchtap="noop">
+    <view class="modal-title">{{replyTitle}}</view>
+    <view class="modal-sub" wx:if="{{replySub}}">{{replySub}}</view>
+    <textarea
+      class="modal-textarea"
+      maxlength="200"
+      placeholder="请输入回复内容（将展示给用户）"
+      placeholder-class="modal-placeholder"
+      value="{{replyText}}"
+      bindinput="onReplyInput"
+    ></textarea>
+    <view class="modal-count">{{replyText.length}}/200</view>
+    <view class="modal-actions">
+      <view class="modal-btn cancel" bindtap="closeReply">取消</view>
+      <view class="modal-btn confirm" bindtap="confirmReply">发送回复</view>
+    </view>
+  </view>
+</view>
+
+<!-- 用户编辑弹窗 -->
+<view class="modal-mask" wx:if="{{userEditVisible}}" catchtap="closeUserEdit" catchtouchmove="noop">
+  <view class="modal-card" catchtap="noop">
+    <view class="modal-title">编辑用户</view>
+    <view class="form-row">
+      <text class="form-label">昵称</text>
+      <input class="form-input" value="{{userEditForm.nickName}}" bindinput="onUserInput" data-field="nickName" placeholder="用户昵称" placeholder-class="modal-placeholder" />
+    </view>
+    <view class="form-row">
+      <text class="form-label">账号</text>
+      <input class="form-input" value="{{userEditForm.account}}" bindinput="onUserInput" data-field="account" placeholder="登录账号" placeholder-class="modal-placeholder" />
+    </view>
+    <view class="form-row">
+      <text class="form-label">角色</text>
+      <picker class="form-picker" range="{{roleNames}}" value="{{roleIndex}}" bindchange="onRoleChange">
+        <view class="form-input picker-value">{{roleNames[roleIndex]}} ▾</view>
+      </picker>
+    </view>
+    <view class="form-row">
+      <text class="form-label">手机号</text>
+      <input class="form-input" type="number" value="{{userEditForm.phone}}" bindinput="onUserInput" data-field="phone" placeholder="11 位手机号" placeholder-class="modal-placeholder" />
+    </view>
+    <view class="form-row">
+      <text class="form-label">邮箱</text>
+      <input class="form-input" value="{{userEditForm.email}}" bindinput="onUserInput" data-field="email" placeholder="选填" placeholder-class="modal-placeholder" />
+    </view>
+    <view class="modal-actions">
+      <view class="modal-btn cancel" bindtap="closeUserEdit">取消</view>
+      <view class="modal-btn confirm" bindtap="confirmUserEdit">保存</view>
+    </view>
+  </view>
+</view>
+
+<!-- 驳回理由弹窗 -->
+  <view class="modal-mask" wx:if="{{rejectVisible}}" catchtap="closeReject" catchtouchmove="noop">
+    <view class="modal-card" catchtap="noop">
+      <view class="modal-title">驳回作品</view>
+      <view class="modal-sub ellipsis">{{rejectName}}</view>
+
+      <textarea
+        class="modal-textarea"
+        value="{{rejectInput}}"
+        placeholder="请填写驳回原因，便于作者修改后重新提交"
+        placeholder-class="modal-placeholder"
+        maxlength="100"
+        auto-height
+        show-confirm-bar="{{false}}"
+        cursor-spacing="40"
+        bindinput="onRejectInput"
+      ></textarea>
+      <view class="modal-count">{{rejectInput.length}} / 100</view>
+
+      <view class="quick-title">快捷理由</view>
+      <view class="quick-list">
+        <view
+          class="quick-chip"
+          wx:for="{{quickReasons}}"
+          wx:key="*this"
+          data-text="{{item}}"
+          bindtap="pickReason"
+        >{{item}}</view>
+      </view>
+
+      <view class="modal-actions">
+        <view class="modal-btn cancel" bindtap="closeReject">取消</view>
+        <view class="modal-btn confirm" bindtap="confirmReject">确认驳回</view>
+      </view>
+    </view>
+  </view>
+</view>

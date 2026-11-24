@@ -1,0 +1,46 @@
+<!-- pages/my-works/my-works.wxml - 我的发布 -->
+<view class="works-page">
+  <!-- 订单提醒条（作者/管理员可见） -->
+  <view class="order-hint" wx:if="{{orderHint}}" bindtap="goOrders" hover-class="hint-hover" hover-stay-time="80">
+    <view class="hint-main">
+      <view class="hint-title">
+        🧾 你有 {{orderHint.total}} 笔订单
+        <text class="hint-tag" wx:if="{{orderHint.active > 0}}">{{orderHint.active}} 笔待处理</text>
+        <text class="hint-tag cancel" wx:if="{{orderHint.cancelled > 0}}">{{orderHint.cancelled}} 笔已取消</text>
+      </view>
+      <view class="hint-reason" wx:if="{{orderHint.latestReason}}">最近取消原因：{{orderHint.latestReason}}</view>
+    </view>
+    <text class="hint-arrow">›</text>
+  </view>
+
+  <view class="works-list" wx:if="{{works.length > 0}}">
+    <view class="work-card" wx:for="{{works}}" wx:key="_id">
+      <view class="work-head">
+        <image class="work-cover" src="{{item.cover}}" mode="aspectFill" bindtap="onPreview" data-src="{{item.cover}}"></image>
+        <view class="work-info">
+          <view class="work-name ellipsis">{{item.name}}</view>
+          <view class="work-summary ellipsis-2">{{item.summary}}</view>
+          <view class="work-meta">
+            <text class="status {{item.statusClass}}">{{item.statusText}}</text>
+            <text class="work-time">{{item.timeText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="reject-reason" wx:if="{{item.status === 'rejected'}}">
+        驳回原因：{{item.rejectReason || '不符合展示规范'}}
+      </view>
+
+      <view class="work-actions">
+        <view class="action-btn" bindtap="onEdit" data-id="{{item._id}}">编辑</view>
+        <view class="action-btn danger" bindtap="onDelete" data-id="{{item._id}}">删除</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:elif="{{!loading}}">
+    <text class="empty-icon">📚</text>
+    <text class="empty-text">还没有发布过作品</text>
+    <view class="btn-primary go-btn" bindtap="goPublish">发布第一件作品</view>
+  </view>
+</view>

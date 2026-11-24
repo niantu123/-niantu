@@ -1,0 +1,19 @@
+<!-- pages/favorites/favorites.wxml - 我的收藏 -->
+<view class="favorites-page">
+  <view class="grid" wx:if="{{products.length > 0}}">
+    <view class="card" wx:for="{{products}}" wx:key="_id">
+      <image class="cover" src="{{item.cover}}" mode="aspectFill" bindtap="onProductTap" data-id="{{item._id}}" hover-class="card-hover" hover-stay-time="80"></image>
+      <view class="info" bindtap="onProductTap" data-id="{{item._id}}" hover-class="item-hover">
+        <view class="name ellipsis">{{item.name}}</view>
+        <view class="author ellipsis">{{item.authorName}}</view>
+      </view>
+      <view class="remove" bindtap="onRemove" data-id="{{item._id}}">取消收藏</view>
+    </view>
+  </view>
+
+  <view class="empty" wx:elif="{{!loading}}">
+    <text class="empty-icon">🤍</text>
+    <text class="empty-text">还没有收藏任何作品</text>
+    <view class="btn-primary go-btn" bindtap="goList">去逛逛</view>
+  </view>
+</view>

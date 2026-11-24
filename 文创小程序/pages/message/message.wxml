@@ -1,0 +1,146 @@
+<!-- pages/message/message.wxml - 留言页（选品留言 / 编辑删除 / 管理员管理） -->
+<view class="message-page">
+  <!-- 顶部切换 -->
+  <view class="tabs">
+    <view class="tab {{tab === 'form' ? 'active' : ''}}" bindtap="switchTab" data-tab="form">提交留言</view>
+    <view class="tab {{tab === 'mine' ? 'active' : ''}}" bindtap="switchTab" data-tab="mine">我的留言</view>
+    <view class="tab {{tab === 'all' ? 'active' : ''}}" wx:if="{{isAdmin}}" bindtap="switchTab" data-tab="all">全部留言</view>
+  </view>
+
+  <!-- 提交留言 -->
+  <view class="form" wx:if="{{tab === 'form'}}">
+    <view class="form-card">
+      <view class="form-title">咨询的作品 <text class="required">*</text></view>
+
+      <!-- 已选作品：封面卡片 + 查看详情 -->
+      <view class="selected-product" wx:if="{{selectedProduct}}">
+        <image class="selected-cover" src="{{selectedProduct.cover}}" mode="aspectFill" bindtap="goProductDetail" data-id="{{selectedProduct._id}}"></image>
+        <view class="selected-info" bindtap="goProductDetail" data-id="{{selectedProduct._id}}">
+          <view class="selected-name ellipsis">{{selectedProduct.name}}</view>
+          <view class="selected-link">查看作品详情 ›</view>
+        </view>
+        <view class="selected-clear" catchtap="clearProduct">✕</view>
+      </view>
+
+      <!-- 未选：打开选择弹窗 -->
+      <view class="picker-trigger" wx:else bindtap="openPicker">
+        <text class="placeholder">请选择要咨询的作品</text>
+        <text class="picker-arrow">▾</text>
+      </view>
+
+      <view class="form-title">留言内容</view>
+      <textarea
+        class="content-input"
+        placeholder="{{selectedProduct ? '对《' + selectedProduct.name + '》有什么想问的？设计故事、材质、价格都可以问～' : '想了解作品的设计故事、材质，或有任何建议，都可以告诉我们～'}}"
+        maxlength="300"
+        value="{{content}}"
+        bindinput="onContentInput"
+      ></textarea>
+      <view class="counter">{{content.length}}/300</view>
+
+      <view class="form-title">联系方式（选填）</view>
+      <input
+        class="contact-input"
+        placeholder="手机号或微信号，便于管理员回复你"
+        value="{{contact}}"
+        bindinput="onContactInput"
+      />
+
+      <button class="submit-btn" bindtap="onSubmit" loading="{{submitting}}">提交留言</button>
+
+      <view class="login-tip" wx:if="{{!user}}">
+        提交留言前需要 <text class="link" bindtap="goLogin">登录</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 我的留言 / 全部留言（管理员） -->
+  <view class="mine" wx:else>
+    <view class="message-list" wx:if="{{messages.length > 0}}">
+      <view class="message-card" wx:for="{{messages}}" wx:key="_id">
+        <view class="message-head">
+          <text class="message-product ellipsis" wx:if="{{item.productName}}">关于《{{item.productName}}》</text>
+          <text class="message-product" wx:else>平台咨询</text>
+          <text class="status {{item.status === '已回复' ? 'status-approved' : 'status-pending'}}">{{item.status}}</text>
+        </view>
+        <view class="message-user" wx:if="{{tab === 'all'}}">{{item.userName}} 的留言</view>
+        <view class="message-content">{{item.content}}</view>
+        <view class="reply" wx:if="{{item.reply}}">
+          <text class="reply-label">管理员回复：</text>{{item.reply}}
+        </view>
+        <view class="message-foot">
+          <text class="message-time">{{item.timeText}}</text>
+          <view class="msg-actions" wx:if="{{tab === 'mine' && item.isMine}}">
+            <view class="msg-action edit" catchtap="openEdit" data-id="{{item._id}}">编辑</view>
+            <view class="msg-action del" catchtap="onDeleteMessage" data-id="{{item._id}}">删除</view>
+          </view>
+          <view class="msg-actions" wx:elif="{{tab === 'all'}}">
+            <view class="msg-action del" catchtap="onDeleteMessage" data-id="{{item._id}}">删除</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:elif="{{user}}">
+      <text class="empty-icon">💬</text>
+      <text class="empty-text">{{tab === 'all' ? '暂无任何留言' : '还没有留言记录'}}</text>
+    </view>
+
+    <view class="empty" wx:else>
+      <text class="empty-icon">🔐</text>
+      <text class="empty-text">登录后查看我的留言</text>
+      <view class="btn-primary login-btn" bindtap="goLogin">去登录</view>
+    </view>
+  </view>
+
+  <!-- 作品选择弹窗（分类筛选 + 封面图 + 查看详情） -->
+  <view class="modal-mask" wx:if="{{pickerVisible}}" catchtap="closePicker" catchtouchmove="noop">
+    <view class="picker-panel" catchtap="noop">
+      <view class="picker-title">选择咨询的作品</view>
+
+      <!-- 分类筛选 -->
+      <scroll-view class="cat-scroll" scroll-x>
+        <view class="cat-row">
+          <view
+            class="cat-chip {{pickerCategory === item.id ? 'active' : ''}}"
+            wx:for="{{categories}}"
+            wx:key="id"
+            bindtap="switchPickerCategory"
+            data-id="{{item.id}}"
+          >{{item.name}}</view>
+        </view>
+      </scroll-view>
+
+      <scroll-view class="picker-list" scroll-y>
+        <view class="picker-item" wx:for="{{filteredProducts}}" wx:key="_id">
+          <image class="picker-cover" src="{{item.cover}}" mode="aspectFill"></image>
+          <view class="picker-info" bindtap="onPickProduct" data-id="{{item._id}}">
+            <view class="picker-name ellipsis">{{item.name}}</view>
+            <view class="picker-summary ellipsis">{{item.summary}}</view>
+          </view>
+          <view class="picker-detail" catchtap="goProductDetail" data-id="{{item._id}}">详情</view>
+        </view>
+        <view class="picker-empty" wx:if="{{filteredProducts.length === 0}}">该分类下暂无上架作品</view>
+      </scroll-view>
+      <view class="picker-cancel" bindtap="closePicker">取消</view>
+    </view>
+  </view>
+
+  <!-- 编辑留言弹窗 -->
+  <view class="modal-mask" wx:if="{{editVisible}}" catchtap="closeEdit" catchtouchmove="noop">
+    <view class="modal-card" catchtap="noop">
+      <view class="modal-title">编辑留言</view>
+      <view class="modal-sub">修改后管理员将重新查看你的留言</view>
+      <textarea
+        class="modal-textarea"
+        maxlength="300"
+        value="{{editContent}}"
+        bindinput="onEditInput"
+      ></textarea>
+      <view class="modal-actions">
+        <view class="modal-btn cancel" bindtap="closeEdit">取消</view>
+        <view class="modal-btn confirm" bindtap="confirmEdit">保存</view>
+      </view>
+    </view>
+  </view>
+</view>

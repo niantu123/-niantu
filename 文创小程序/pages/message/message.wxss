@@ -1,0 +1,505 @@
+/* pages/message/message.wxss - 留言页 */
+.message-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.tabs {
+  display: flex;
+  background: #fff;
+  padding: 0 24rpx;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 26rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+}
+
+.tab.active {
+  color: #ff6b35;
+  font-weight: bold;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 8rpx;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 6rpx;
+  background: #ff6b35;
+  border-radius: 3rpx;
+}
+
+/* 表单 */
+.form {
+  padding: 24rpx;
+}
+
+.product-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 20rpx;
+  margin-bottom: 20rpx;
+  background: #fff8ef;
+  border-radius: 12rpx;
+}
+
+.chip-text {
+  flex: 1;
+  font-size: 24rpx;
+  color: #b26a2a;
+}
+
+.chip-close {
+  font-size: 24rpx;
+  color: #b26a2a;
+  padding-left: 16rpx;
+}
+
+.form-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 28rpx 24rpx;
+  box-shadow: 0 6rpx 24rpx rgba(60, 40, 20, 0.05);
+}
+
+.form-title {
+  font-size: 27rpx;
+  font-weight: bold;
+  margin-bottom: 16rpx;
+}
+
+.content-input {
+  width: 100%;
+  height: 240rpx;
+  padding: 20rpx;
+  font-size: 26rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  line-height: 1.6;
+}
+
+.counter {
+  text-align: right;
+  font-size: 22rpx;
+  color: #bbb;
+  margin: 8rpx 0 24rpx;
+}
+
+.contact-input {
+  height: 80rpx;
+  padding: 0 20rpx;
+  font-size: 26rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  margin-bottom: 32rpx;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  padding: 8rpx 0;
+}
+
+.submit-btn::after {
+  border: none;
+}
+
+.login-tip {
+  margin-top: 20rpx;
+  text-align: center;
+  font-size: 23rpx;
+  color: #999;
+}
+
+.link {
+  color: #ff6b35;
+}
+
+/* 我的留言 */
+.mine {
+  padding: 24rpx;
+}
+
+.message-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 6rpx 20rpx rgba(60, 40, 20, 0.05);
+}
+
+.message-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14rpx;
+}
+
+.message-product {
+  flex: 1;
+  min-width: 0;
+  font-size: 24rpx;
+  color: #b26a2a;
+  margin-right: 16rpx;
+}
+
+.message-content {
+  font-size: 27rpx;
+  color: #333;
+  line-height: 1.7;
+}
+
+.reply {
+  margin-top: 16rpx;
+  padding: 16rpx 20rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  font-size: 25rpx;
+  color: #666;
+  line-height: 1.7;
+}
+
+.reply-label {
+  color: #ff6b35;
+}
+
+.message-time {
+  margin-top: 16rpx;
+  font-size: 21rpx;
+  color: #bbb;
+}
+
+.login-btn {
+  padding: 16rpx 48rpx;
+  font-size: 26rpx;
+}
+
+/* 作品选择器（必选） */
+.product-picker {
+  display: block;
+}
+
+/* 未选状态触发行 */
+.picker-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 24rpx;
+  margin-top: 18rpx;
+  margin-bottom: 8rpx;
+  font-size: 26rpx;
+  color: #bbb;
+  background: #f8f6f4;
+  border-radius: 14rpx;
+}
+
+.picker-trigger .placeholder {
+  color: #bbb;
+}
+
+.picker-arrow {
+  color: #bbb;
+  font-size: 24rpx;
+}
+
+.required {
+  color: #ff4d4f;
+}
+
+/* 已选作品卡片 */
+.selected-product {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 18rpx;
+  margin-bottom: 8rpx;
+  padding: 18rpx;
+  background: #fff8ef;
+  border: 1rpx solid #ffd9c2;
+  border-radius: 16rpx;
+}
+
+.selected-cover {
+  flex: 0 0 110rpx;
+  width: 110rpx;
+  height: 110rpx;
+  border-radius: 12rpx;
+  background: #f5f5f5;
+}
+
+.selected-info {
+  flex: 1;
+  min-width: 0;
+  padding: 0 40rpx 0 20rpx;
+}
+
+.selected-name {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.selected-link {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #ff6b35;
+}
+
+.selected-clear {
+  position: absolute;
+  top: 10rpx;
+  right: 12rpx;
+  width: 44rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #bbb;
+}
+
+/* 作品选择弹窗 */
+.picker-panel {
+  width: 100%;
+  max-width: 640rpx;
+  max-height: 78vh;
+  padding: 30rpx 26rpx 20rpx;
+  background: #fff;
+  border-radius: 30rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.picker-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #222;
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+/* 分类筛选行 */
+.cat-scroll {
+  white-space: nowrap;
+  margin-bottom: 16rpx;
+}
+
+.cat-row {
+  display: inline-flex;
+  padding: 4rpx 2rpx;
+}
+
+.cat-chip {
+  flex-shrink: 0;
+  padding: 10rpx 26rpx;
+  margin-right: 14rpx;
+  font-size: 23rpx;
+  color: #666;
+  background: #f5f2ee;
+  border-radius: 26rpx;
+}
+
+.cat-chip.active {
+  color: #fff;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+}
+
+.picker-empty {
+  padding: 60rpx 0;
+  font-size: 23rpx;
+  color: #b8aca2;
+  text-align: center;
+}
+
+.picker-list {
+  flex: 1;
+  max-height: 56vh;
+}
+
+.picker-item {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 8rpx;
+  border-bottom: 1rpx solid #f5f0eb;
+}
+
+.picker-item:last-child {
+  border-bottom: none;
+}
+
+.picker-cover {
+  flex: 0 0 96rpx;
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 12rpx;
+  background: #f5f5f5;
+}
+
+.picker-info {
+  flex: 1;
+  min-width: 0;
+  padding: 0 16rpx;
+}
+
+.picker-name {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.picker-summary {
+  margin-top: 6rpx;
+  font-size: 21rpx;
+  color: #a99f96;
+}
+
+.picker-detail {
+  flex-shrink: 0;
+  padding: 8rpx 22rpx;
+  font-size: 22rpx;
+  color: #b26a2a;
+  background: #fff6ef;
+  border: 1rpx solid #ffd9c2;
+  border-radius: 24rpx;
+}
+
+.picker-detail:active {
+  background: #ffe9db;
+}
+
+.picker-cancel {
+  margin-top: 18rpx;
+  height: 76rpx;
+  line-height: 76rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #666;
+  background: #f5f5f5;
+  border-radius: 38rpx;
+}
+
+/* 留言操作（编辑 / 删除） */
+.message-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16rpx;
+}
+
+.msg-actions {
+  display: flex;
+}
+
+.msg-action {
+  padding: 6rpx 24rpx;
+  margin-left: 14rpx;
+  font-size: 22rpx;
+  border-radius: 22rpx;
+}
+
+.msg-action.edit {
+  color: #b26a2a;
+  background: #fff6ef;
+  border: 1rpx solid #ffd9c2;
+}
+
+.msg-action.del {
+  color: #cf1322;
+  background: #fff1f0;
+  border: 1rpx solid #ffccc7;
+}
+
+.message-user {
+  margin-top: 8rpx;
+  font-size: 21rpx;
+  color: #999;
+}
+
+/* 编辑留言弹窗 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 48rpx;
+  background: rgba(24, 18, 14, 0.5);
+  z-index: 100;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 620rpx;
+  padding: 36rpx 32rpx 30rpx;
+  background: #fff;
+  border-radius: 30rpx;
+  box-sizing: border-box;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #222;
+  text-align: center;
+}
+
+.modal-sub {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: #999;
+  text-align: center;
+}
+
+.modal-textarea {
+  width: 100%;
+  min-height: 180rpx;
+  margin-top: 24rpx;
+  padding: 20rpx;
+  font-size: 25rpx;
+  line-height: 1.7;
+  color: #333;
+  background: #f8f6f4;
+  border-radius: 16rpx;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  display: flex;
+  margin-top: 20rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 27rpx;
+  border-radius: 40rpx;
+}
+
+.modal-btn.cancel {
+  margin-right: 16rpx;
+  color: #666;
+  background: #f5f5f5;
+}
+
+.modal-btn.confirm {
+  color: #fff;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+}
+

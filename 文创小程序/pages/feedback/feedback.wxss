@@ -1,0 +1,287 @@
+/* pages/feedback/feedback.wxss - 意见反馈 */
+.feedback-page {
+  min-height: 100vh;
+  padding: 24rpx;
+  box-sizing: border-box;
+  background: #faf7f3;
+}
+
+.form-card {
+  padding: 30rpx;
+  background: #fff;
+  border-radius: 26rpx;
+  box-shadow: 0 8rpx 28rpx rgba(60, 40, 20, 0.06);
+}
+
+.form-title {
+  font-size: 27rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.type-row {
+  display: flex;
+  margin: 18rpx 0 6rpx;
+}
+
+.type-chip {
+  padding: 14rpx 34rpx;
+  margin-right: 20rpx;
+  font-size: 25rpx;
+  color: #b26a2a;
+  background: #fff6ef;
+  border: 1rpx solid #ffd9c2;
+  border-radius: 30rpx;
+}
+
+.type-chip.active {
+  color: #fff;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  border-color: transparent;
+  box-shadow: 0 6rpx 14rpx rgba(255, 107, 53, 0.25);
+}
+
+.content-input {
+  width: 100%;
+  min-height: 200rpx;
+  margin-top: 18rpx;
+  padding: 22rpx;
+  font-size: 25rpx;
+  line-height: 1.7;
+  color: #333;
+  background: #f8f6f4;
+  border-radius: 16rpx;
+  box-sizing: border-box;
+}
+
+.counter {
+  margin-top: 8rpx;
+  text-align: right;
+  font-size: 20rpx;
+  color: #c4c4c4;
+}
+
+.submit-btn {
+  margin-top: 26rpx;
+  color: #fff;
+  font-size: 28rpx;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  border-radius: 42rpx;
+  box-shadow: 0 8rpx 18rpx rgba(255, 107, 53, 0.28);
+}
+
+.login-tip {
+  margin-top: 18rpx;
+  font-size: 22rpx;
+  color: #999;
+  text-align: center;
+}
+
+.link {
+  color: #ff6b35;
+}
+
+/* 我的反馈 */
+.history {
+  margin-top: 26rpx;
+}
+
+.history-title {
+  padding-left: 6rpx;
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #666;
+}
+
+.fb-list {
+  margin-top: 16rpx;
+}
+
+.fb-card {
+  padding: 22rpx 26rpx;
+  margin-bottom: 16rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 6rpx 20rpx rgba(60, 40, 20, 0.05);
+}
+
+.fb-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fb-tags {
+  display: flex;
+  align-items: center;
+}
+
+.fb-type {
+  padding: 2rpx 16rpx;
+  margin-right: 12rpx;
+  font-size: 20rpx;
+  border-radius: 8rpx;
+}
+
+.fb-type.s {
+  color: #b26a2a;
+  background: #fff6ef;
+}
+
+.fb-type.q {
+  color: #cf1322;
+  background: #fff1f0;
+}
+
+.fb-type.done {
+  color: #1a7f37;
+  background: #ecfbf1;
+}
+
+.fb-type.wait {
+  color: #b26a2a;
+  background: #fff6ef;
+}
+
+.fb-reply {
+  margin-top: 14rpx;
+  padding: 16rpx 20rpx;
+  background: #fff6ef;
+  border-left: 6rpx solid #ff8c42;
+  border-radius: 12rpx;
+}
+
+.fb-reply-title {
+  font-size: 21rpx;
+  font-weight: bold;
+  color: #b26a2a;
+}
+
+.fb-reply-text {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #6b5646;
+  line-height: 1.7;
+}
+
+.fb-time {
+  font-size: 20rpx;
+  color: #bbb;
+}
+
+.fb-content {
+  margin-top: 12rpx;
+  font-size: 25rpx;
+  color: #444;
+  line-height: 1.7;
+}
+
+.fb-ops {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14rpx;
+}
+
+.fb-op {
+  padding: 6rpx 24rpx;
+  margin-left: 14rpx;
+  font-size: 22rpx;
+  border-radius: 22rpx;
+}
+
+.fb-op.edit {
+  color: #b26a2a;
+  background: #fff6ef;
+  border: 1rpx solid #ffd9c2;
+}
+
+.fb-op.del {
+  color: #cf1322;
+  background: #fff1f0;
+  border: 1rpx solid #ffccc7;
+}
+
+/* 编辑反馈弹窗 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 48rpx;
+  background: rgba(24, 18, 14, 0.5);
+  z-index: 100;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 620rpx;
+  padding: 36rpx 32rpx 30rpx;
+  background: #fff;
+  border-radius: 30rpx;
+  box-sizing: border-box;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #222;
+  text-align: center;
+}
+
+.modal-sub {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: #999;
+  text-align: center;
+}
+
+.modal-textarea {
+  width: 100%;
+  min-height: 180rpx;
+  margin-top: 24rpx;
+  padding: 20rpx;
+  font-size: 25rpx;
+  line-height: 1.7;
+  color: #333;
+  background: #f8f6f4;
+  border-radius: 16rpx;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  display: flex;
+  margin-top: 20rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 27rpx;
+  border-radius: 40rpx;
+}
+
+.modal-btn.cancel {
+  margin-right: 16rpx;
+  color: #666;
+  background: #f5f5f5;
+}
+
+.modal-btn.confirm {
+  color: #fff;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+}
+
+.fb-empty {
+  margin-top: 20rpx;
+  font-size: 23rpx;
+  color: #b8aca2;
+  text-align: center;
+}

@@ -1,0 +1,97 @@
+<!-- pages/publish/publish.wxml - 作者发布作品 -->
+<!-- 隐藏画布：AI 根据图片描述时把图片绘制导出 base64（不依赖文件系统，工具与真机都可靠） -->
+<canvas type="2d" id="aiCanvas" style="position:fixed;left:-9999px;top:-9999px;width:1024px;height:1024px;"></canvas>
+<view class="publish-page">
+  <view class="tip-banner">作品提交后将由平台管理员审核，通过后公开展示</view>
+
+  <!-- 图片上传 -->
+  <view class="form-card">
+    <view class="form-title">作品图片 <text class="required">*</text><text class="form-sub">最多 9 张</text></view>
+    <view class="image-grid">
+      <view class="image-item" wx:for="{{images}}" wx:key="*this">
+        <image class="image-preview" src="{{item}}" mode="aspectFill"></image>
+        <view class="image-remove" bindtap="removeImage" data-index="{{index}}">✕</view>
+      </view>
+      <view class="image-add" wx:if="{{images.length < 9}}" bindtap="chooseImages">
+        <text class="add-icon">＋</text>
+        <text class="add-text">上传图片</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="form-card">
+    <view class="form-title">基本信息</view>
+
+    <view class="field-row">
+      <text class="field-label">作品名称 <text class="required">*</text></text>
+      <input
+        class="field-input"
+        placeholder="例如：新安校徽烫金笔记本"
+        maxlength="30"
+        value="{{name}}"
+        data-field="name"
+        bindinput="onFieldInput"
+      />
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">所属分类 <text class="required">*</text></text>
+      <picker class="field-picker" mode="selector" range="{{categories}}" range-key="name" value="{{categoryIndex}}" bindchange="onCategoryChange">
+        <view class="picker-value">{{categories[categoryIndex].name}} <text class="picker-arrow">></text></view>
+      </picker>
+    </view>
+
+    <view class="field-column">
+      <view class="field-label-row">
+        <text class="field-label">一句话简介 <text class="required">*</text></text>
+        <view class="ai-btn {{images.length ? '' : 'disabled'}}" hover-class="ai-btn-hover" hover-stay-time="80" bindtap="onAiDescribe">
+          <text class="ai-btn-icon">🪄</text>AI 根据图片描述
+        </view>
+      </view>
+      <textarea
+        class="field-textarea small"
+        placeholder="用一句话介绍这件作品，上传图片后可点右上角让 AI 帮你写"
+        maxlength="60"
+        value="{{summary}}"
+        data-field="summary"
+        bindinput="onFieldInput"
+      ></textarea>
+    </view>
+  </view>
+
+  <!-- 设计故事 -->
+  <view class="form-card">
+    <view class="form-title">设计故事</view>
+    <textarea
+      class="field-textarea"
+      placeholder="讲讲这件作品背后的校园记忆、设计灵感与创作过程"
+      maxlength="500"
+      value="{{story}}"
+      data-field="story"
+      bindinput="onFieldInput"
+    ></textarea>
+    <view class="counter">{{story.length}}/500</view>
+  </view>
+
+  <!-- 材质参数 -->
+  <view class="form-card">
+    <view class="form-title">材质与参数 <text class="form-sub">选填</text></view>
+    <view class="field-row">
+      <text class="field-label">材质工艺</text>
+      <input class="field-input" placeholder="例如：布面精装 / 100g 道林纸" maxlength="40" value="{{material}}" data-field="material" bindinput="onFieldInput" />
+    </view>
+    <view class="field-row">
+      <text class="field-label">尺寸规格</text>
+      <input class="field-input" placeholder="例如：A5 · 148×210mm" maxlength="40" value="{{size}}" data-field="size" bindinput="onFieldInput" />
+    </view>
+    <view class="field-row">
+      <text class="field-label">定价（元）</text>
+      <input class="field-input" type="digit" placeholder="选填，填写后作品可在商店购买" maxlength="7" value="{{price}}" data-field="price" bindinput="onFieldInput" />
+    </view>
+  </view>
+
+  <button class="submit-btn" bindtap="onSubmit" loading="{{submitting}}">{{isEdit ? '保存并重新提交审核' : '提交作品'}}</button>
+
+  <view class="footer-text">提交即表示作品为本人原创，并同意平台展示规范</view>
+</view>

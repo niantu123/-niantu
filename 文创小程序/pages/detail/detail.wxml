@@ -1,0 +1,169 @@
+<!-- pages/detail/detail.wxml - 作品详情页 -->
+<view class="detail-page" wx:if="{{product}}">
+  <!-- 多图预览 -->
+  <view class="gallery">
+    <swiper class="gallery-swiper" circular bindchange="onSwiperChange">
+      <swiper-item wx:for="{{images}}" wx:key="*this">
+        <image
+          class="gallery-img"
+          src="{{item}}"
+          mode="aspectFill"
+          bindtap="openPreview"
+          data-src="{{item}}"
+        ></image>
+      </swiper-item>
+    </swiper>
+    <view class="gallery-indicator">{{current + 1}} / {{images.length}}</view>
+  </view>
+
+  <!-- 基础信息 -->
+  <view class="info-card">
+    <view class="title-row">
+      <text class="product-name">{{product.name}}</text>
+      <view class="view-chip"><text class="view-emoji">👁</text><text>{{product.views || 0}} 次浏览</text></view>
+    </view>
+    <view class="tags">
+      <text class="category-chip">{{categoryName}}</text>
+      <text class="tag" wx:for="{{product.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+    </view>
+    <view class="summary">{{product.summary}}</view>
+    <view class="author-row">
+      <text class="author-label">作者</text>
+      <text class="author-name">{{product.authorName}}</text>
+    </view>
+  </view>
+
+  <!-- 材质参数 -->
+  <view class="section-card">
+    <view class="section-title">材质与参数</view>
+    <view class="param-row">
+      <text class="param-label">材质工艺</text>
+      <text class="param-value">{{product.material || '详见作品说明'}}</text>
+    </view>
+    <view class="param-row">
+      <text class="param-label">尺寸规格</text>
+      <text class="param-value">{{product.size || '以实物为准'}}</text>
+    </view>
+  </view>
+
+  <!-- 设计故事 -->
+  <view class="section-card">
+    <view class="section-title">校园设计故事</view>
+    <view class="story">{{product.story}}</view>
+  </view>
+
+  <!-- 作品留言区 -->
+  <view class="section-card">
+    <view class="section-title">作品留言（{{comments.length}}）</view>
+
+    <view class="comment-list" wx:if="{{comments.length > 0}}">
+      <view class="comment-item" wx:for="{{comments}}" wx:key="_id">
+        <view class="comment-head">
+          <text class="comment-user">{{item.userName}}</text>
+          <text class="comment-time">{{item.timeText}}</text>
+        </view>
+        <view class="comment-content">{{item.content}}</view>
+        <view class="comment-reply" wx:if="{{item.reply}}">管理员回复：{{item.reply}}</view>
+        <view class="comment-ops" wx:if="{{item.isMine || isAdmin}}">
+          <view class="comment-op edit" wx:if="{{item.isMine}}" catchtap="onEditComment" data-id="{{item._id}}">编辑</view>
+          <view class="comment-op del" catchtap="onDeleteComment" data-id="{{item._id}}">删除</view>
+        </view>
+      </view>
+    </view>
+    <view class="comment-empty" wx:else>还没有评论，来抢沙发～</view>
+    <!-- 已登录：评论条为纯 view（点击弹出评论弹窗），页面无常驻原生输入框，杜绝穿透 -->
+    <block wx:if="{{user}}">
+      <view class="comment-input-row" wx:if="{{!buyVisible && !editVisible && !previewVisible && !commentVisible}}" bindtap="openCommentEditor">
+        <view class="comment-input">写下你的评论…</view>
+        <view class="comment-send">发送</view>
+      </view>
+      <view class="comment-login-tip" wx:else bindtap="goLoginTip">登录后即可评论 💬</view>
+    </block>
+    <view class="comment-login-tip" wx:else bindtap="goLoginTip">登录后即可评论 💬</view>
+  </view>
+
+  <view class="footer-text">— 每一件作品，都藏着一段校园记忆 —</view>
+
+  <!-- 底部操作栏（弹窗打开时隐藏） -->
+  <cover-view class="bottom-bar" wx:if="{{!buyVisible && !editVisible && !previewVisible}}">
+    <cover-view class="bar-item" bindtap="onToggleFavorite">
+      <cover-view class="bar-icon-box"><cover-view class="bar-icon">{{favorited ? '❤️' : '🤍'}}</cover-view></cover-view>
+      <cover-view class="bar-text">{{favorited ? '已收藏' : '收藏'}}</cover-view>
+    </cover-view>
+    <cover-view class="bar-item" bindtap="goMessage">
+      <cover-view class="bar-icon-box"><cover-view class="bar-icon">💬</cover-view></cover-view>
+      <cover-view class="bar-text">咨询</cover-view>
+    </cover-view>
+    <cover-view class="bar-main" bindtap="openBuy">立即购买</cover-view>
+  </cover-view>
+
+
+  <!-- 购买弹窗：可调整数量 -->
+  <view class="modal-mask" wx:if="{{buyVisible}}" catchtap="closeBuy" catchtouchmove="noop">
+    <view class="buy-card" catchtap="noop">
+      <view class="buy-head">
+        <image class="buy-cover" src="{{product.cover}}" mode="aspectFill"></image>
+        <view class="buy-info">
+          <view class="buy-name ellipsis">{{product.name}}</view>
+          <view class="buy-price">¥{{product.price}}</view>
+        </view>
+      </view>
+      <view class="buy-row">
+        <text class="buy-label">购买数量</text>
+        <view class="buy-qty">
+          <view class="qty-btn" catchtap="onBuyMinus">－</view>
+          <view class="qty-num">{{buyQty}}</view>
+          <view class="qty-btn plus" catchtap="onBuyPlus">＋</view>
+        </view>
+      </view>
+      <view class="buy-total-row">
+        <text class="buy-label">小计</text>
+        <text class="buy-total">¥{{buyTotal}}</text>
+      </view>
+      <view class="buy-field">
+        <text class="buy-label">收货地址</text>
+        <input class="buy-input" placeholder="宿舍楼/校区等详细地址" maxlength="60" value="{{shipAddress}}" bindinput="onShipAddress" />
+      </view>
+      <view class="buy-field last">
+        <text class="buy-label">联系方式</text>
+        <input class="buy-input" placeholder="手机号 / 微信号" maxlength="30" value="{{shipContact}}" bindinput="onShipContact" />
+      </view>
+      <view class="buy-actions">
+        <view class="buy-btn outline" catchtap="confirmAddCart">加入购物车</view>
+        <view class="buy-btn solid" catchtap="confirmBuyNow">立即购买</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评论编辑弹窗 -->
+  <view class="modal-mask" wx:if="{{editVisible}}" catchtap="closeEditComment" catchtouchmove="noop">
+    <view class="edit-card" catchtap="noop">
+      <view class="edit-title">修改评论</view>
+      <textarea class="edit-textarea" maxlength="200" value="{{editCommentText}}" placeholder="输入新的评论内容" placeholder-class="edit-placeholder" bindinput="onEditCommentInput"></textarea>
+      <view class="edit-count">{{editCommentText.length}}/200</view>
+      <view class="edit-actions">
+        <view class="edit-btn cancel" bindtap="closeEditComment">取消</view>
+        <view class="edit-btn confirm" bindtap="confirmEditComment">保存修改</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 发表评论弹窗（textarea 在弹窗内为最高层，且操作栏已隐藏） -->
+  <view class="modal-mask" wx:if="{{commentVisible}}" catchtap="closeCommentEditor" catchtouchmove="noop">
+    <view class="edit-card" catchtap="noop">
+      <view class="edit-title">写下你的评论</view>
+      <textarea class="edit-textarea" maxlength="200" value="{{commentInput}}" placeholder="说说你对这件作品的看法…" placeholder-class="edit-placeholder" bindinput="onCommentInput" focus="{{commentVisible}}"></textarea>
+      <view class="edit-count">{{commentInput.length}}/200</view>
+      <view class="edit-actions">
+        <view class="edit-btn cancel" bindtap="closeCommentEditor">取消</view>
+        <view class="edit-btn confirm" bindtap="onSubmitComment">发送</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 全屏图片预览 -->
+  <view class="preview-mask" wx:if="{{previewVisible}}" bindtap="closePreview" catchtouchmove="noop">
+    <image class="preview-img" src="{{previewSrc}}" mode="aspectFit" catchtap="noop"></image>
+    <view class="preview-tip">点击任意位置关闭</view>
+  </view>
+</view>

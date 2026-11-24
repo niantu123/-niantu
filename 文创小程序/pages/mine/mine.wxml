@@ -1,0 +1,123 @@
+<!-- pages/mine/mine.wxml - 个人中心 -->
+<view class="mine-page">
+  <!-- 用户信息 -->
+  <view class="user-header">
+    <view class="user-info" wx:if="{{user}}" bindtap="goLogin">
+      <view class="avatar-wrap" catchtap="onChangeAvatar">
+        <image class="avatar" src="{{user.avatarUrl || '/images/avatar/default.jpg'}}" mode="aspectFill"></image>
+      </view>
+      <view class="user-detail">
+        <view class="nickname">{{user.nickName}}</view>
+        <view class="role">{{roleText}}</view>
+      </view>
+    </view>
+
+    <view class="user-info" wx:else bindtap="goLogin">
+      <view class="avatar avatar-empty">👤</view>
+      <view class="user-detail">
+        <view class="nickname">点击登录</view>
+        <view class="role">登录后可收藏、留言与发布作品</view>
+      </view>
+      <text class="arrow">></text>
+    </view>
+
+    <!-- 数据统计 -->
+    <view class="stats">
+      <view class="stat-item" bindtap="goFavorites">
+        <view class="stat-num">{{favoritesCount}}</view>
+        <view class="stat-label">我的收藏</view>
+      </view>
+      <view class="stat-item" bindtap="goMessages">
+        <view class="stat-num">{{messageCount}}</view>
+        <view class="stat-label">我的留言</view>
+      </view>
+      <view class="stat-item" bindtap="goMyWorks">
+        <view class="stat-num">{{worksCount}}</view>
+        <view class="stat-label">我的发布</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 作者入口 -->
+  <view class="publish-card" bindtap="goPublish" hover-class="card-hover" hover-stay-time="80">
+    <view class="publish-left">
+      <view class="publish-title">✍️ 我要发布作品</view>
+      <view class="publish-desc">上传你的原创校园文创，让更多人看见</view>
+    </view>
+    <view class="publish-btn">去发布</view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu">
+    <view class="menu-item" hover-class="item-hover" bindtap="goFavorites">
+      <text class="menu-icon">❤️</text>
+      <text class="menu-name">我的收藏</text>
+      <text class="menu-value">{{favoritesCount}}</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" hover-class="item-hover" bindtap="goMessages">
+      <text class="menu-icon">💬</text>
+      <text class="menu-name">我的留言</text>
+      <text class="menu-value">{{messageCount}}</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" hover-class="item-hover" bindtap="goOrders">
+      <text class="menu-icon">🧾</text>
+      <text class="menu-name">我的订单</text>
+      <text class="menu-value">购物记录</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" hover-class="item-hover" bindtap="goFeedback">
+      <text class="menu-icon">📮</text>
+      <text class="menu-name">意见反馈</text>
+      <text class="menu-value">提意见 · 报问题</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" hover-class="item-hover" bindtap="goMyWorks">
+      <text class="menu-icon">📚</text>
+      <text class="menu-name">我的发布</text>
+      <text class="menu-value">{{worksCount}}</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" hover-class="item-hover" bindtap="goAccount">
+      <text class="menu-icon">🔐</text>
+      <text class="menu-name">账号安全</text>
+      <text class="menu-value">手机号 · 邮箱</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" hover-class="item-hover" wx:if="{{isAdmin}}" bindtap="goAdmin">
+      <text class="menu-icon">🛠️</text>
+      <text class="menu-name">管理员后台</text>
+      <text class="menu-value">审核 · 用户 · 留言</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" hover-class="item-hover" wx:if="{{isAuthor}}" bindtap="goAuthorOrders">
+      <text class="menu-icon">🧾</text>
+      <text class="menu-name">收到的订单</text>
+      <text class="menu-value">销量 · 取消原因</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" hover-class="item-hover" wx:if="{{isAuthor}}" bindtap="goAuthorMessages">
+      <text class="menu-icon">💬</text>
+      <text class="menu-name">收到的咨询</text>
+      <text class="menu-value">查看 · 回复</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" hover-class="item-hover" bindtap="goAssistant">
+      <text class="menu-icon">🌿</text>
+      <text class="menu-name">文创助手</text>
+      <text class="menu-value">有问题问它</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" hover-class="item-hover" bindtap="onAbout">
+      <text class="menu-icon">ℹ️</text>
+      <text class="menu-name">关于项目</text>
+      <text class="menu-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout" wx:if="{{user}}" bindtap="onLogout">退出登录</view>
+
+  <view class="footer-text">新安文创 · 让校园记忆被看见</view>
+</view>

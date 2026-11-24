@@ -1,0 +1,251 @@
+/* pages/store/store.wxss - 校园文创商店 */
+.store-page {
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+.store-header {
+  padding: 44rpx 30rpx 44rpx;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  border-radius: 0 0 32rpx 32rpx;
+  color: #fff;
+}
+
+.store-title {
+  font-size: 38rpx;
+  font-weight: bold;
+}
+
+.store-sub {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  opacity: 0.9;
+}
+
+/* 购物车 / 订单 快捷入口：两张并排大卡片 */
+.quick-nav {
+  display: flex;
+  gap: 20rpx;
+  margin: 24rpx 30rpx 0;
+  position: relative;
+}
+
+.quick-card {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx 22rpx;
+  min-height: 108rpx;
+  box-sizing: border-box;
+  box-shadow: 0 6rpx 18rpx rgba(93, 58, 26, 0.08);
+}
+
+.cart-card {
+  background: linear-gradient(135deg, #fff3ec, #ffe3d3);
+  border: 1rpx solid #ffc9ad;
+  box-sizing: border-box;
+}
+
+.quick-hover {
+  transform: scale(0.97);
+}
+
+.quick-icon {
+  font-size: 40rpx;
+  flex-shrink: 0;
+}
+
+.quick-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.quick-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #3a2e22;
+}
+
+.quick-sub {
+  margin-top: 6rpx;
+  font-size: 21rpx;
+  color: #b8a99a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quick-arrow {
+  color: #c4b8a9;
+  font-size: 26rpx;
+  flex-shrink: 0;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -12rpx;
+  right: -8rpx;
+  min-width: 36rpx;
+  height: 36rpx;
+  padding: 0 10rpx;
+  background: #ff3b30;
+  color: #fff;
+  font-size: 20rpx;
+  line-height: 36rpx;
+  text-align: center;
+  border-radius: 999rpx;
+  font-weight: bold;
+  box-shadow: 0 2rpx 8rpx rgba(255, 59, 48, 0.4);
+}
+
+/* 推荐产品标题栏（类名避开全局 .section-bar 装饰条样式） */
+.goods-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 46rpx 30rpx 30rpx;
+}
+
+.section-name {
+  font-size: 34rpx;
+  font-weight: bold;
+  letter-spacing: 2rpx;
+  color: #ff6b35;
+  background: linear-gradient(135deg, #ff6b35, #ff9a3d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  flex-shrink: 0;
+}
+
+.section-ops {
+  display: flex;
+  align-items: center;
+}
+
+.shuffle-btn {
+  display: flex;
+  align-items: center;
+  padding: 10rpx 26rpx;
+  background: #fff3ec;
+  border: 1rpx solid #ffc9ad;
+  color: #ff6b35;
+  font-size: 24rpx;
+  font-weight: 600;
+  border-radius: 999rpx;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.shuffle-hover {
+  opacity: 0.85;
+}
+
+.goods-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  padding: 6rpx 30rpx 40rpx;
+}
+
+.goods-card {
+  width: calc((100% - 20rpx) / 2);
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  border: 1rpx solid rgba(93, 58, 26, 0.06);
+  box-shadow: 0 4rpx 14rpx rgba(93, 58, 26, 0.05);
+}
+
+.card-hover {
+  transform: scale(0.98);
+  transition: transform 0.12s;
+}
+
+.goods-cover {
+  width: 100%;
+  height: 280rpx;
+  display: block;
+  background: #f5f0ea;
+}
+
+.goods-info {
+  padding: 18rpx 20rpx 22rpx;
+}
+
+.goods-name {
+  font-size: 27rpx;
+  font-weight: 600;
+  color: #3a2e22;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.goods-bottom {
+  margin-top: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.goods-price {
+  color: #ff6b35;
+  font-weight: bold;
+  display: flex;
+  align-items: baseline;
+}
+
+.price-symbol {
+  font-size: 22rpx;
+  margin-right: 2rpx;
+}
+
+.price-num {
+  font-size: 32rpx;
+}
+
+.price-none {
+  color: #b8a99a;
+  font-size: 24rpx;
+  font-weight: normal;
+}
+
+.add-cart {
+  width: 52rpx;
+  height: 52rpx;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  color: #fff;
+  font-size: 36rpx;
+  line-height: 52rpx;
+  text-align: center;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 10rpx rgba(255, 107, 53, 0.35);
+  flex-shrink: 0;
+}
+
+.add-cart.disabled {
+  background: #d9cfc4;
+  box-shadow: none;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 140rpx 0;
+}
+
+.empty-icon {
+  font-size: 72rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  color: #b8a99a;
+  font-size: 26rpx;
+}

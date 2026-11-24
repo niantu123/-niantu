@@ -1,0 +1,82 @@
+<!-- pages/orders/orders.wxml - 我的订单 -->
+<view class="orders-page">
+  <block wx:if="{{user}}">
+    <view class="order-list" wx:if="{{orders.length > 0}}">
+      <view class="order-card" wx:for="{{orders}}" wx:key="_id">
+        <view class="order-head">
+          <text class="order-no">订单号：{{item._id}}</text>
+          <text class="order-status {{item.statusClass}}">{{item.status}}</text>
+        </view>
+        <view class="order-body">
+          <image class="order-cover" src="{{item.cover}}" mode="aspectFill"></image>
+          <view class="order-main">
+            <view class="order-items ellipsis-2">{{item.itemsText}}</view>
+            <view class="order-time">{{item.timeText}}</view>
+          </view>
+          <view class="order-total">
+            <text class="total-label">合计</text>
+            <text class="total-num">¥{{item.total}}</text>
+          </view>
+        </view>
+        <view class="order-ship" wx:if="{{item.address}}">
+          <text class="ship-emoji">📍</text> {{item.address}} · {{item.contact}}
+        </view>
+        <view class="order-actions" wx:if="{{item.status === '已下单'}}">
+          <view class="act-btn ghost" catchtap="onCancel" data-id="{{item._id}}">取消订单</view>
+          <view class="act-btn primary" catchtap="onConfirm" data-id="{{item._id}}">确认收货</view>
+        </view>
+        <view class="order-actions" wx:elif="{{item.status === '已取消'}}">
+          <view class="act-btn ghost danger-text" catchtap="onDelete" data-id="{{item._id}}">删除订单</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!loading && orders.length === 0}}">
+      <text class="empty-icon">🧾</text>
+      <text class="empty-text">还没有订单，去商店逛逛吧</text>
+      <view class="go-store-btn" bindtap="goStore">去逛逛商店</view>
+    </view>
+  </block>
+
+  <view class="empty" wx:if="{{!user && !loading}}">
+    <text class="empty-icon">🔒</text>
+    <text class="empty-text">登录后才能查看订单</text>
+    <view class="go-store-btn" bindtap="requireLogin">去登录</view>
+  </view>
+</view>
+
+<!-- 取消订单弹窗：填写原因 -->
+<view class="modal-mask" wx:if="{{cancelVisible}}" catchtap="closeCancel" catchtouchmove="noop">
+  <view class="modal-card" catchtap="noop">
+    <view class="modal-title">取消订单</view>
+    <view class="modal-sub">请告诉我们取消的原因，便于商家改进</view>
+    <textarea
+      class="modal-textarea"
+      value="{{cancelReason}}"
+      placeholder="请填写取消原因（必填）"
+      placeholder-class="modal-placeholder"
+      maxlength="100"
+      auto-height
+      show-confirm-bar="{{false}}"
+      cursor-spacing="40"
+      bindinput="onCancelInput"
+    ></textarea>
+    <view class="modal-count">{{cancelReason.length}} / 100</view>
+
+    <view class="quick-title">快捷理由</view>
+    <view class="quick-list">
+      <view
+        class="quick-chip"
+        wx:for="{{quickReasons}}"
+        wx:key="*this"
+        data-text="{{item}}"
+        bindtap="pickCancelReason"
+      >{{item}}</view>
+    </view>
+
+    <view class="modal-actions">
+      <view class="modal-btn cancel" bindtap="closeCancel">再想想</view>
+      <view class="modal-btn confirm" bindtap="confirmCancel">确认取消</view>
+    </view>
+  </view>
+</view>

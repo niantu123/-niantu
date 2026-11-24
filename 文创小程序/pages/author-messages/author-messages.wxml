@@ -1,0 +1,59 @@
+<!-- pages/author-messages/author-messages.wxml - 收到的咨询（作者视角） -->
+<view class="inq-page">
+  <block wx:if="{{user}}">
+    <view class="inq-list" wx:if="{{list.length > 0}}">
+      <view class="inq-card" wx:for="{{list}}" wx:key="_id">
+        <view class="inq-head">
+          <text class="inq-user">{{item.userName}}</text>
+          <text class="inq-status {{item.status === '已回复' ? 'done' : 'pending'}}">{{item.status}}</text>
+        </view>
+        <view class="inq-product">关于《{{item.productName}}》</view>
+        <view class="inq-content">{{item.content}}</view>
+        <view class="inq-contact" wx:if="{{item.contact}}">联系方式：{{item.contact}}</view>
+        <view class="inq-reply" wx:if="{{item.reply}}">
+          <text class="inq-reply-label">我的回复：</text>{{item.reply}}
+          <text class="inq-reply-time" wx:if="{{item.repliedAtText}}">（{{item.repliedAtText}}）</text>
+        </view>
+        <view class="inq-foot">
+          <text class="inq-time">{{item.timeText}}</text>
+          <view class="inq-reply-btn" bindtap="openReply" data-id="{{item._id}}">{{item.reply ? '修改回复' : '回复'}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!loading && list.length === 0}}">
+      <text class="empty-icon">💬</text>
+      <text class="empty-text">还没有收到咨询</text>
+      <view class="go-store-btn" bindtap="goStore">去逛逛商店</view>
+    </view>
+  </block>
+
+  <view class="empty" wx:if="{{!user && !loading}}">
+    <text class="empty-icon">🔒</text>
+    <text class="empty-text">登录后才能查看收到的咨询</text>
+    <view class="go-store-btn" bindtap="requireLogin">去登录</view>
+  </view>
+</view>
+
+<!-- 回复弹窗 -->
+<view class="modal-mask" wx:if="{{replyVisible}}" catchtap="closeReply" catchtouchmove="noop">
+  <view class="modal-card" catchtap="noop">
+    <view class="modal-title">回复咨询</view>
+    <textarea
+      class="modal-textarea"
+      value="{{replyText}}"
+      placeholder="请输入回复内容（将展示给咨询的用户）"
+      placeholder-class="modal-placeholder"
+      maxlength="200"
+      auto-height
+      show-confirm-bar="{{false}}"
+      cursor-spacing="40"
+      bindinput="onReplyInput"
+    ></textarea>
+    <view class="modal-count">{{replyText.length}} / 200</view>
+    <view class="modal-actions">
+      <view class="modal-btn cancel" bindtap="closeReply">取消</view>
+      <view class="modal-btn confirm" bindtap="confirmReply">发送回复</view>
+    </view>
+  </view>
+</view>

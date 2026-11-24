@@ -1,0 +1,60 @@
+<!-- pages/login/login.wxml - 登录注册 -->
+<view class="login-page">
+  <view class="brand">
+    <view class="brand-icon">🏫</view>
+    <view class="brand-title">新安文创</view>
+    <view class="brand-sub">让校园记忆被看见</view>
+  </view>
+
+  <view class="login-card">
+    <view class="mode-tabs">
+      <view class="mode-tab {{mode === 'wechat' ? 'active' : ''}}" bindtap="switchMode" data-mode="wechat">微信登录</view>
+      <view class="mode-tab {{mode === 'phone' ? 'active' : ''}}" bindtap="switchMode" data-mode="phone">账号登录</view>
+      <view class="mode-tab {{mode === 'register' ? 'active' : ''}}" bindtap="switchMode" data-mode="register">注册</view>
+    </view>
+
+    <!-- 微信授权 -->
+    <view class="panel" wx:if="{{mode === 'wechat'}}">
+      <view class="wechat-tip">使用微信授权登录，可收藏作品、提交留言、发布原创文创。</view>
+      <button class="btn-primary wechat-btn" bindtap="onWechatLogin" loading="{{loading}}">微信一键授权登录</button>
+    </view>
+
+    <!-- 账号登录 -->
+    <view class="panel" wx:if="{{mode === 'phone'}}">
+      <input class="field" type="text" maxlength="20" placeholder="请输入手机号或账号" value="{{phone}}" bindinput="onPhoneInput" />
+      <view class="field-row">
+        <input wx:if="{{!pwdShow}}" class="field field-flex" type="text" password maxlength="20" placeholder="请输入密码" value="{{password}}" bindinput="onPasswordInput" />
+        <input wx:else class="field field-flex" type="text" maxlength="20" placeholder="请输入密码" value="{{password}}" bindinput="onPasswordInput" />
+        <view class="eye {{pwdShow ? 'open' : 'closed'}}" hover-class="eye-hover" hover-stay-time="60" catchtap="togglePwd">
+          <view class="eye-outline"></view>
+          <view class="eye-pupil"></view>
+          <view class="eye-lash lash-1"></view>
+          <view class="eye-lash lash-2"></view>
+          <view class="eye-lash lash-3"></view>
+        </view>
+      </view>
+      <button class="btn-primary" bindtap="onPhoneLogin" loading="{{loading}}">登录</button>
+      <view class="admin-hint" bindtap="fillAdmin">演示管理员账号：admin / 123456，点击填入</view>
+    </view>
+
+    <!-- 注册 -->
+    <view class="panel" wx:if="{{mode === 'register'}}">
+      <input class="field" type="number" maxlength="11" placeholder="手机号" value="{{phone}}" bindinput="onPhoneInput" />
+      <view class="field-row">
+        <input wx:if="{{!pwdShow}}" class="field field-flex" type="text" password maxlength="20" placeholder="设置密码（至少 6 位）" value="{{password}}" bindinput="onPasswordInput" />
+        <input wx:else class="field field-flex" type="text" maxlength="20" placeholder="设置密码（至少 6 位）" value="{{password}}" bindinput="onPasswordInput" />
+        <view class="eye {{pwdShow ? 'open' : 'closed'}}" hover-class="eye-hover" hover-stay-time="60" catchtap="togglePwd">
+          <view class="eye-outline"></view>
+          <view class="eye-pupil"></view>
+          <view class="eye-lash lash-1"></view>
+          <view class="eye-lash lash-2"></view>
+          <view class="eye-lash lash-3"></view>
+        </view>
+      </view>
+      <input class="field" maxlength="20" placeholder="账号" value="{{account}}" bindinput="onAccountInput" />
+      <button class="btn-primary" bindtap="onRegister" loading="{{loading}}">注册并登录</button>
+    </view>
+  </view>
+
+  <view class="agreement">登录即表示同意《校园文创平台用户协议》</view>
+</view>

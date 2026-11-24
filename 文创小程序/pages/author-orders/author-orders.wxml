@@ -1,0 +1,46 @@
+<!-- pages/author-orders/author-orders.wxml - 收到的订单（作者视角） -->
+<view class="orders-page">
+  <block wx:if="{{user}}">
+    <view class="page-hint" wx:if="{{orders.length > 0}}">以下订单包含你发布的作品</view>
+
+    <view class="order-list" wx:if="{{orders.length > 0}}">
+      <view class="order-card" wx:for="{{orders}}" wx:key="_id">
+        <view class="order-head">
+          <text class="order-no">{{item.userName}}</text>
+          <text class="order-status {{item.statusClass}}">{{item.status}}</text>
+        </view>
+        <view class="order-body">
+          <image class="order-cover" src="{{item.cover}}" mode="aspectFill"></image>
+          <view class="order-main">
+            <view class="order-items ellipsis-2">{{item.itemsText}}</view>
+            <view class="order-time">{{item.timeText}}</view>
+          </view>
+          <view class="order-total">
+            <text class="total-label">你的小计</text>
+            <text class="total-num">¥{{item.subtotal}}</text>
+          </view>
+        </view>
+        <view class="order-ship" wx:if="{{item.address}}">
+          <text class="ship-emoji">📍</text> {{item.address}} · {{item.contact}}
+        </view>
+        <view class="cancel-reason" wx:if="{{item.status === '已取消'}}">
+          <view class="cancel-title">用户取消原因</view>
+          <view class="cancel-text">{{item.cancelReason || '未填写'}}</view>
+          <view class="cancel-time" wx:if="{{item.cancelledText}}">取消于 {{item.cancelledText}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!loading && orders.length === 0}}">
+      <text class="empty-icon">🧾</text>
+      <text class="empty-text">还没有包含你作品的订单</text>
+      <view class="go-store-btn" bindtap="goStore">去逛逛商店</view>
+    </view>
+  </block>
+
+  <view class="empty" wx:if="{{!user && !loading}}">
+    <text class="empty-icon">🔒</text>
+    <text class="empty-text">登录后才能查看收到的订单</text>
+    <view class="go-store-btn" bindtap="requireLogin">去登录</view>
+  </view>
+</view>

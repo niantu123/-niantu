@@ -1,0 +1,253 @@
+/* pages/account/account.wxss - 账号安全 */
+.account-page {
+  min-height: 100vh;
+  padding: 24rpx;
+  background: #f5f5f5;
+  box-sizing: border-box;
+}
+
+.card {
+  margin-bottom: 20rpx;
+  padding: 4rpx 24rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 6rpx 24rpx rgba(60, 40, 20, 0.05);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.value {
+  flex: 1;
+  min-width: 0;
+  margin-left: 24rpx;
+  text-align: right;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.value.muted {
+  color: #bbb;
+}
+
+.tip {
+  padding: 8rpx 12rpx;
+  font-size: 22rpx;
+  color: #aaa;
+  line-height: 1.7;
+}
+
+.arrow {
+  flex-shrink: 0;
+  margin-left: 12rpx;
+  font-size: 34rpx;
+  line-height: 1;
+  color: #ccc;
+}
+
+/* 密码输入行：flex 并排，眼睛不与输入框重叠，避免原生组件拦截点击 */
+.input-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.input-wrap .modal-input {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+
+/* 小眼睛：闭眼显示黑点密文，睁眼显示明文 */
+.eye {
+  position: relative;
+  z-index: 5;
+  flex-shrink: 0;
+  width: 44rpx;
+  height: 44rpx;
+  margin-left: 10rpx;
+  padding: 6rpx;
+  box-sizing: border-box;
+}
+
+.eye-hover {
+  opacity: 0.55;
+}
+
+.eye-outline {
+  position: absolute;
+  left: 3rpx;
+  right: 3rpx;
+  top: 8rpx;
+  height: 24rpx;
+  border: 3rpx solid #c08a5a;
+  border-radius: 50%;
+  box-sizing: border-box;
+  transform: scaleY(1);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
+.eye-pupil {
+  position: absolute;
+  left: 50%;
+  top: 20rpx;
+  width: 10rpx;
+  height: 10rpx;
+  margin: -5rpx 0 0 -5rpx;
+  background: #c08a5a;
+  border-radius: 50%;
+  transition: opacity 0.2s ease;
+}
+
+.eye-lash {
+  position: absolute;
+  top: 26rpx;
+  width: 3rpx;
+  height: 9rpx;
+  background: #c08a5a;
+  border-radius: 2rpx;
+  transform-origin: top center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.lash-1 {
+  left: 6rpx;
+  transform: rotate(38deg);
+}
+
+.lash-2 {
+  left: 18rpx;
+  transform: rotate(0deg);
+}
+
+.lash-3 {
+  left: 30rpx;
+  transform: rotate(-38deg);
+}
+
+/* 闭合：眼睑压扁成一条线，睫毛张开 */
+.eye.closed .eye-outline {
+  transform: scaleY(0.18);
+}
+
+.eye.closed .eye-pupil {
+  opacity: 0;
+}
+
+.eye.closed .eye-lash {
+  opacity: 1;
+}
+
+/* 修改密码弹窗 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 48rpx;
+  background: rgba(24, 18, 14, 0.5);
+  z-index: 100;
+  animation: maskIn 0.18s ease-out;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 620rpx;
+  padding: 36rpx 32rpx 30rpx;
+  background: #fff;
+  border-radius: 30rpx;
+  box-sizing: border-box;
+  animation: cardIn 0.2s ease-out;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #222;
+  text-align: center;
+}
+
+.modal-sub {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: #999;
+  text-align: center;
+}
+
+.modal-input {
+  width: 100%;
+  height: 84rpx;
+  margin-top: 22rpx;
+  padding: 0 24rpx;
+  font-size: 26rpx;
+  color: #333;
+  background: #f8f6f4;
+  border-radius: 16rpx;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  display: flex;
+  margin-top: 30rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 27rpx;
+  border-radius: 40rpx;
+}
+
+.modal-btn.cancel {
+  margin-right: 16rpx;
+  color: #666;
+  background: #f5f5f5;
+}
+
+.modal-btn.confirm {
+  color: #fff;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  box-shadow: 0 8rpx 18rpx rgba(255, 107, 53, 0.28);
+}
+
+@keyframes maskIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(18rpx) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

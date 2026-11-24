@@ -1,0 +1,68 @@
+<!-- pages/cart/cart.wxml - 购物车 -->
+<view class="cart-page">
+  <block wx:if="{{user}}">
+    <!-- 商品列表 -->
+    <view class="cart-list" wx:if="{{items.length > 0}}">
+      <view class="cart-item" wx:for="{{items}}" wx:key="productId">
+        <image class="cart-cover" src="{{item.cover}}" mode="aspectFill" bindtap="goStore"></image>
+        <view class="cart-main">
+          <view class="cart-name ellipsis-2">{{item.name}}</view>
+          <view class="cart-price">¥{{item.price}}</view>
+          <view class="cart-ops">
+            <view class="qty-box">
+              <view class="qty-btn" catchtap="changeQty" data-id="{{item.productId}}" data-delta="-1">－</view>
+              <view class="qty-num">{{item.qty}}</view>
+              <view class="qty-btn plus" catchtap="changeQty" data-id="{{item.productId}}" data-delta="1">＋</view>
+            </view>
+            <view class="del-btn" catchtap="onDelete" data-id="{{item.productId}}">删除</view>
+          </view>
+        </view>
+        <view class="item-subtotal">¥{{item.price * item.qty}}</view>
+      </view>
+    </view>
+
+    <!-- 空购物车 -->
+    <view class="empty" wx:if="{{!loading && items.length === 0}}">
+      <text class="empty-icon">🛒</text>
+      <text class="empty-text">购物车还是空的</text>
+      <view class="go-store-btn" bindtap="goStore">去逛逛商店</view>
+    </view>
+
+    <!-- 底部结算栏 -->
+    <view class="checkout-bar" wx:if="{{items.length > 0}}">
+      <view class="total-wrap">
+        <text class="total-label">合计：</text>
+        <text class="total-price">¥{{total}}</text>
+      </view>
+      <view class="checkout-btn" bindtap="onCheckout">结算 ({{items.length}})</view>
+    </view>
+
+    <!-- 收货信息填单弹窗 -->
+    <view class="modal-mask" wx:if="{{shipVisible}}" catchtap="closeShip" catchtouchmove="noop">
+      <view class="ship-card" catchtap="noop">
+        <view class="ship-title">填写收货信息</view>
+        <view class="ship-summary">共 {{items.length}} 种商品 · 合计 ¥{{total}}</view>
+        <view class="ship-field">
+          <text class="ship-label">收货地址</text>
+          <input class="ship-input" placeholder="宿舍楼/校区等详细地址" maxlength="60" value="{{shipAddress}}" bindinput="onShipAddress" />
+        </view>
+        <view class="ship-field">
+          <text class="ship-label">联系方式</text>
+          <input class="ship-input" placeholder="手机号 / 微信号" maxlength="30" value="{{shipContact}}" bindinput="onShipContact" />
+        </view>
+        <view class="ship-tip">演示交易，无需真实支付，货品支持校园自提</view>
+        <view class="ship-actions">
+          <view class="ship-btn cancel" bindtap="closeShip">取消</view>
+          <view class="ship-btn confirm" bindtap="confirmCheckout">提交订单</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 未登录 -->
+  <view class="empty" wx:if="{{!user && !loading}}">
+    <text class="empty-icon">🔒</text>
+    <text class="empty-text">登录后才能使用购物车</text>
+    <view class="go-store-btn" bindtap="requireLogin">去登录</view>
+  </view>
+</view>

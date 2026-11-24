@@ -1,0 +1,129 @@
+<!-- pages/index/index.wxml - 首页 -->
+<view class="index-page">
+  <!-- 搜索栏 -->
+  <view class="search-bar theme-gradient">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索文创作品名称"
+        placeholder-class="search-placeholder"
+        value="{{keyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearch"
+        confirm-type="search"
+      />
+      <view class="search-btn" bindtap="onSearch">搜索</view>
+    </view>
+  </view>
+
+  <!-- 校园公告 -->
+  <view class="notice-bar" wx:if="{{noticeList.length > 0}}">
+    <text class="notice-icon">📢</text>
+    <swiper class="notice-swiper" vertical autoplay circular interval="3500" duration="400">
+      <swiper-item wx:for="{{noticeList}}" wx:key="_id">
+        <text class="notice-text ellipsis">{{item.content}}</text>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 轮播图 -->
+  <swiper
+    class="banner"
+    indicator-dots
+    indicator-color="rgba(255,255,255,0.45)"
+    indicator-active-color="#ff6b35"
+    autoplay
+    circular
+    interval="3500"
+    duration="500"
+  >
+    <swiper-item wx:for="{{bannerList}}" wx:key="_id" bindtap="onBannerTap">
+      <image class="banner-img" src="{{item.image}}" mode="aspectFill"></image>
+      <view class="banner-mask">
+        <view class="banner-title">{{item.title}}</view>
+        <view class="banner-sub">{{item.subtitle}}</view>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <!-- 分类导航 -->
+  <view class="category-nav">
+    <view
+      class="category-item"
+      wx:for="{{categoryList}}"
+      wx:key="id"
+      bindtap="onCategoryTap"
+      data-id="{{item.id}}"
+      hover-class="card-hover"
+      hover-stay-time="80"
+    >
+      <view class="category-icon">{{item.icon}}</view>
+      <text class="category-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 热门推荐 -->
+  <view class="section">
+    <view class="section-header">
+      <view class="section-bar"></view>
+      <view class="section-title">热门文创</view>
+      <text class="section-more" bindtap="goList">更多 ›</text>
+    </view>
+    <scroll-view class="hot-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="hot-list">
+        <view
+          class="hot-item"
+          wx:for="{{hotProducts}}"
+          wx:key="_id"
+          bindtap="onProductTap"
+          data-id="{{item._id}}"
+          hover-class="card-hover"
+          hover-stay-time="80"
+        >
+          <image class="hot-img" src="{{item.cover}}" mode="aspectFill"></image>
+          <view class="hot-name ellipsis">{{item.name}}</view>
+          <view class="hot-author ellipsis">{{item.authorName}}</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 新品上架 -->
+  <view class="section">
+    <view class="section-header">
+      <view class="section-bar"></view>
+      <view class="section-title">新品上架</view>
+      <text class="section-more" bindtap="goList">全部 ></text>
+    </view>
+    <view class="product-grid">
+      <view
+        class="product-item"
+        wx:for="{{newProducts}}"
+        wx:key="_id"
+        bindtap="onProductTap"
+        data-id="{{item._id}}"
+        hover-class="card-hover"
+        hover-stay-time="80"
+      >
+        <image class="product-img" src="{{item.cover}}" mode="aspectFill"></image>
+        <view class="product-info">
+          <view class="product-name ellipsis-2">{{item.name}}</view>
+          <view class="product-summary ellipsis">{{item.summary}}</view>
+          <view class="product-bottom">
+            <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+            <view class="view-chip"><text class="view-emoji">👁</text><text>{{item.views}}</text></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer-text">— 新安学院文创 · 让校园记忆被看见 —</view>
+
+  <!-- 文创助手悬浮入口 -->
+  <view class="assistant-fab" hover-class="fab-hover" hover-stay-time="60" bindtap="goAssistant">
+    <text class="fab-icon">🌿</text>
+    <text class="fab-text">助手</text>
+  </view>
+</view>
